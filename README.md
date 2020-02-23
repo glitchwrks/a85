@@ -10,6 +10,8 @@ Unless something is tagged with a release number, consider this work to be ALPHA
 
 ### Compiling
 
+Just run `make` in the project directory. `make test` will build the test file, `TEST85.ASM`, which runs the assembler through all opcodes. Or, if you want to build by hand:
+
 `cc a85.c a85util.c a85eval.c -o a85`
 
 ### Revision History:
