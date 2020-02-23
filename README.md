@@ -12,6 +12,7 @@ Unless something is tagged with a release number, consider this work to be ALPHA
 
 ### Revision History:
 
+```
 Ver     Date            Description
 -----------------------------------------------------------------------------
 0.0     AUG 1987        Derived from version 3.4 of my portable 6800/6801
@@ -31,3 +32,4 @@ Ver     Date            Description
 
 0.2     FEB 2020        Glitch Works general cleanup, added support for
                         PRINT and INCLUDE.
+```
