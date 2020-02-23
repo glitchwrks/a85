@@ -183,17 +183,15 @@ Aztec CII compiler, so I didn't bother to support it at all.
 #include <stdio.h>
 
 /*  Comment out all but the line containing the name of your compiler:	*/
+// #define	AZTEC_C
+// #define	CI_C86							
+// #define	ECO_C							
+// #define	HP_UX							
+// #define	LATTICE_C						
+// #define	MICROSOFT_C						
+// #define	QNIX							
 
-/* #define		AZTEC_C
-/* #define	CI_C86							*/
-/* #define	ECO_C							*/
-/* #define	HP_UX							*/
-/* #define	LATTICE_C						*/
-/* #define	MICROSOFT_C						*/
-/* #define	QNIX							*/
-
-/*  Compiler dependencies:						*/
-
+/*  Compiler dependencies: */						
 #ifdef	AZTEC_C
 #define	getc(f)		agetc(f)
 #define	putc(c,f)	aputc(c,f)
@@ -213,14 +211,14 @@ Aztec CII compiler, so I didn't bother to support it at all.
 #define	printf		tprintf
 #endif
 
-/*  On 8-bit machines, the static type is as efficient as the register	*/
-/*  type and far more efficient than the auto type.  On larger machines	*/
-/*  such as the 8086 family, this is not necessarily the case.  To	*/
-/*  let you experiment to see what generates the fastest, smallest code	*/
-/*  for your machine, I have declared internal scratch variables in	*/
-/*  functions "SCRATCH int", "SCRATCH unsigned", etc.  A SCRATCH	*/
-/*  varible is made static below, but you might want to try register	*/
-/*  instead.								*/
+/* On 8-bit machines, the static type is as efficient as the register	
+type and far more efficient than the auto type.  On larger machines	
+such as the 8086 family, this is not necessarily the case.  To	
+let you experiment to see what generates the fastest, smallest code	
+for your machine, I have declared internal scratch variables in	
+functions "SCRATCH int", "SCRATCH unsigned", etc.  A SCRATCH	
+varible is made static below, but you might want to try register	
+instead.								*/
 
 #define	SCRATCH		static
 

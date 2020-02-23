@@ -233,14 +233,14 @@ TOKEN *lex(void)
 	    token.attr = VAL;
 	    token.valu = pc;
 	}
-	else if (o = find_operator(token.sval)) {
+	else if ((o = find_operator(token.sval))) {
 	    token.attr = o -> attr;
 	    token.valu = o -> valu;
 	}
 	else {
 	    token.attr = VAL;  token.valu = 0;
 
-	    if (s = find_symbol(token.sval)) {
+	    if ((s = find_symbol(token.sval))) {
 		token.valu = s -> valu;
 		if (pass == 2 && s -> attr & FORWD) forwd = TRUE;
 	    }

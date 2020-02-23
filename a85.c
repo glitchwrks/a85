@@ -85,7 +85,7 @@ TOKEN token;
 
 static int done, ifsp, off;
 
-void main(argc,argv)
+int main(argc,argv)
 int argc;
 char **argv;
 {
@@ -232,7 +232,6 @@ static void do_label(void)
     SYMBOL *find_symbol(char *), *new_symbol(char *);
 
     if (label[0]) {
-	/* printf("do_label>>%s<<\n",label); /* HRJ diagnostic */
 	listhex = TRUE;
 	if (pass == 1) {
 	    if (!((l = new_symbol(label)) -> attr)) {
@@ -241,7 +240,7 @@ static void do_label(void)
 	    }
 	}
 	else {
-	    if (l = find_symbol(label)) {
+	    if ((l = find_symbol(label))) {
 		l -> attr = VAL;
 		if (l -> valu != pc) error('M');
 	    }
@@ -393,7 +392,7 @@ save_byte:				*o++ = low(u);  ++bytes;  break;
 			    }
 			}
 			else {
-			    if (l = find_symbol(label)) {
+			    if ((l = find_symbol(label))) {
 				l -> attr = VAL;
 				address = expr();
 				if (forwd) error('P');
@@ -454,7 +453,7 @@ save_byte:				*o++ = low(u);  ++bytes;  break;
 			    }
 			}
 			else {
-			    if (l = find_symbol(label)) {
+			    if ((l = find_symbol(label))) {
 				address = expr();
 				if (forwd) error('P');
 				else if (l -> attr & SOFT) {
