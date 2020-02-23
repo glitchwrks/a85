@@ -304,16 +304,17 @@ instead.								*/
 #define	DB		1
 #define	DS		2
 #define	DW		3
-#define	ELSE		4
+#define	ELSE	4
 #define	END		5
-#define	ENDIF		6
+#define	ENDIF	6
 #define	EQU		7
 #define	IF		8
-#define	INCL		9
+#define	INCL	9
 #define	ORG		10
-#define	PAGE		11
+#define	PAGE	11
 #define	SET		12
-#define	TITLE		13
+#define	TITLE	13
+#define PRINT	14
 
 /*  Lexical analyzer (A85EVAL.C) token buffer and stream pointer:	*/
 
@@ -397,7 +398,7 @@ typedef struct _symbol SYMBOL;
 typedef struct {
     unsigned attr;
     unsigned valu;
-    char oname[6];
+    char oname[7];
 } OPCODE;
 
 /*  Utility package (A85UTIL.C) hex file output routines:		*/
