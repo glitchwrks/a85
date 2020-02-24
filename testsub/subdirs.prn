@@ -1,0 +1,11 @@
+                        	INCLUDE "../INCLUDE1.ASM"
+   0064                 	ORG 0100
+                        
+V                       	INCLUDE	"INCLUDE2.ASM"
+                        
+   0064   3e 44         	MVI 	A,044H
+                        
+                        
+1 Error(s)
+   0066                 	END
+
