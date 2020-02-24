@@ -36,6 +36,8 @@ represents. */
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <unistd.h>
+#include <errno.h>
 
 /* external routines HRJ*/
 void asm_line(void);
@@ -530,9 +532,9 @@ static void pseudo_op(void)
 				}
 			}
 			
-				else error('L');
+			else error('L');
 				
-				break;
+			break;
 
 		case IF:
 			if (++ifsp == IFDEPTH) fatal_error(IFOFLOW);
@@ -623,7 +625,19 @@ static void pseudo_op(void)
 			if ((lex() -> attr & TYPE) == STR) {
 				if (++filesp == FILES) fatal_error(FLOFLOW);
 			
-				if (!(filestk[filesp] = fopen(token.sval,"r"))) {
+				char actualpath[4096];
+				char *path;
+
+				path = realpath(token.sval, actualpath);
+
+				printf("Opening %s, actual path is: %s\n", token.sval, path);
+
+				if ((filestk[filesp] = fopen(token.sval,"r"))) {
+					int result = fchdir(fileno(filestk[filesp]));
+					printf("fchdir returned: %i, errno %i\n", result, errno);
+				}
+
+				else {
 					--filesp;
 					error('V');
 				}
@@ -633,7 +647,8 @@ static void pseudo_op(void)
 			
 			break;
 
-		case ORG:   u = expr();
+		case ORG:   
+			u = expr();
 			if (forwd) error('P');
 			
 			else {
