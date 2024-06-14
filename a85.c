@@ -37,7 +37,7 @@ represents. */
 #include <string.h>
 #include <ctype.h>
 
-/* eternal routines HRJ*/
+/* external routines HRJ*/
 void asm_line(void);
 void lclose(void), lopen(char *), lputs(void);
 void hclose(void), hopen(char *), hputc(unsigned);
@@ -60,12 +60,22 @@ static void flush(void);
 char errcode, lline[MAXLINE + 1], title[MAXLINE];
 
 int pass = 0;
-int eject, filesp, forwd, listhex;
-unsigned  address, bytes, errors, listleft, obj[MAXLINE], pagelen, pc;
+int eject, filesp, listhex;
+int forwd; /* Flag for whether we're making a forward reference or not */
+unsigned  address; /* The address shown on the assembly output */
+unsigned bytes, errors, listleft, obj[MAXLINE], pagelen, pc;
 FILE *filestk[FILES], *source;
 TOKEN token;
 
-static int done, ifsp, off;
+static int done;
+static int off;	/* Turns assembly off when set to TRUE, initialized to FALSE in main() */
+
+/* The IF stack keeps track of whether or not assembly lines are being
+ * processed. It is primed with ASM_ON so that we will indeed be processing
+ * even before we hit the first IF statement
+ */
+static int ifstack[IFDEPTH] = { ASM_ON };
+static int ifsp; /* Stack pointer for the IF stack */
 
 /*  Mainline routine.  This routine parses the command line, sets up	*/
 /*  the assembler at the beginning of each pass, feeds the source text	*/
@@ -78,10 +88,10 @@ char **argv;
 	SCRATCH unsigned *o;
 	int newline(void);
 
-	printf("8085 Cross-Assembler (Portable) Ver 0.2\n");
+	printf("8085 Cross-Assembler (Portable) Ver 0.3\n");
 	printf("Copyright (c) 1985,1987 William C. Colley, III\n");
 	printf("fixes for LCC/Windows (c) 2013 Herb Johnson\n");
-	printf("Glitch Works modifications (c) 2020 The Glitch Works\n\n");
+	printf("Glitch Works modifications (c) 2020,2024 Glitch Works, LLC\n\n");
 
 	while (--argc > 0) {
 		if (**++argv == '-') {
@@ -152,7 +162,6 @@ char **argv;
 }
 
 static char label[MAXLINE];
-static int ifstack[IFDEPTH] = { ON };
 
 static OPCODE *opcod;
 
@@ -213,7 +222,7 @@ void asm_line(void)
 		if (label[0]) error('L');
 	}
 
-	else if (off) { 
+	else if (off) { /* if off is TRUE, don't process the line */
 		listhex = FALSE;
 		flush();
 		return;
@@ -376,6 +385,7 @@ static void pseudo_op(void)
 	unsigned expr(void);
 	SYMBOL *find_symbol(char *), *new_symbol(char *);
 	TOKEN *lex(void);
+	void suppress(void);
 
 	int popc(void);
 
@@ -447,11 +457,21 @@ static void pseudo_op(void)
 				break;
 
 		case ELSE:
-			listhex = FALSE;
-			if (ifsp) off = (ifstack[ifsp] = -ifstack[ifsp]) != ON;
+			if (ifsp) {
+				/* IF stack not empty, see if we're turning assembly on or off */
+				off = (ifstack[ifsp] = -ifstack[ifsp]) != ASM_ON;
+			} else {
+				listhex = FALSE; /* Don't print anything in address column */
+				error('I'); /* IF stack empty, error condition */
+			}
+
+			if (ifstack[ifsp] == ASM_ON) {
+				address = 0xFFFF; /* ELSE taken, show it in address column */
+			} else {
+				listhex = FALSE; /* ELSE not taken, don't print anything in address column */
+			}
 			
-				else error('I');
-				break;
+			break;
 
 		case END:
 			do_label();
@@ -478,11 +498,12 @@ static void pseudo_op(void)
 		case ENDIF:
 			listhex = FALSE;
 			
-				if (ifsp) off = ifstack[--ifsp] != ON;
+			if (ifsp) {
+				/* IF stack not empty, see if we're turning assembly on or off */
+				off = ifstack[--ifsp] != ASM_ON;
+			} else error('I');
 			
-				else error('I');
-			
-				break;
+			break;
 
 		case EQU:
 			if (label[0]) {
@@ -525,14 +546,44 @@ static void pseudo_op(void)
 			
 			if (off) { 
 				listhex = FALSE;
-				ifstack[ifsp] = ZERO;
+				ifstack[ifsp] = ASM_NULL;
 			} /* was NULL but error HRJ*/
 			
 			else {
-				ifstack[ifsp] = address ? ON : OFF;
+				ifstack[ifsp] = address ? ASM_ON : ASM_OFF;
 				if (!address) off = TRUE;
 			}
 			
+			break;
+
+		case IFDEF:
+			/* Increment the IF stack pointer, check for overflow */
+			if (++ifsp == IFDEPTH) fatal_error(IFOFLOW);
+
+			suppress(); /* Suppress UNDEFINED LABEL for this lex */
+			lex(); /* Process whatever may be next after the IFDEF */
+
+			if (off) { 
+				/* Handle possibility of nested IFDEFs */
+				listhex = FALSE;
+				ifstack[ifsp] = ASM_NULL; /* Set IF stack value to NULL state */
+			} else {
+				if (token.attr == VAL) {
+					if (find_symbol(token.sval) && !forwd) {
+						address = token.valu; /* Show defined symbol value as address */
+						ifstack[ifsp] = ASM_ON; /* Push assembly state to IF stack */
+						off = FALSE; /* Switch assembly ON for this block */
+					} else {
+						listhex = FALSE; /* Symbol not defined, don't show address */
+						address = FALSE; /* Must set dummy address to avoid phasing error */
+						ifstack[ifsp] = ASM_OFF; /* Push assembly state to IF stack */
+						off = TRUE;	/* Switch assembly OFF for this block */
+					}
+				} else {
+					error('V');	/* Not a value we can try to look up */
+				}
+			}
+
 			break;
 
 		case INCL:

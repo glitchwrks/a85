@@ -264,14 +264,14 @@ instead.								*/
 #define	BIGINST		3		/*  longest instruction length	*/
 #define	IFDEPTH		16		/*  maximum IF nesting level	*/
 #define	NOP		0x00		/*  processor's NOP opcode	*/
-#define	ON		1		/*  assembly turned on		*/
-#define	OFF		-1		/*  assembly turned off		*/
-#define ZERO		0		/* HRJ alternative to NULL      */
+#define	ASM_ON		1		/*  assembly turned on		*/
+#define	ASM_OFF		-1		/*  assembly turned off		*/
+#define ASM_NULL		0		/* HRJ alternative to NULL      */
 
 /*  Line assembler (A85.C) opcode attribute word flag masks:		*/
 
 #define	PSEUDO		0x800	/*  is pseudo op			*/
-#define	ISIF		0x400	/*  is IF, ELSE, or ENDI		*/
+#define	ISIF		0x400	/*  is IF, IFDEF, ELSE, or ENDIF		*/
 #define	ARG2		0x3c0	/*  second argument descriptor		*/
 #define	ARG1		0x03c	/*  first argument descriptor		*/
 #define	NONE		0x000	/*	no argument			*/
@@ -314,7 +314,8 @@ instead.								*/
 #define	PAGE	11
 #define	SET		12
 #define	TITLE	13
-#define PRINT	14
+#define	PRINT	14
+#define	IFDEF	15
 
 /*  Lexical analyzer (A85EVAL.C) token buffer and stream pointer:	*/
 

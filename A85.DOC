@@ -985,7 +985,7 @@
 
              5)   an INCL argument refers to a file that does not exist.
 
-
+             6)   an IFDEF or INDEF followed by something other than a symbol
 
 
                                        15
