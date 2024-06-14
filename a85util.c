@@ -1,38 +1,28 @@
-/*
-	HEADER:		CUG267;
-	TITLE:		8085 Cross-Assembler (Portable);
-	FILENAME:	A85UTIL.C;
-	VERSION:	0.1;
-	DATE:		08/27/1988;
-	SEE-ALSO:	A85.H;
-	AUTHORS:	William C. Colley III;
-*/
+/* A85 Cross Assembler in Portable C
+ *
+ * Copyright (c) 1985,1987 William C. Colley, III
+ * Copyright (c) 2013 Herb Johnson
+ * Copyright (c) 2020 The Glitch Works
+ *
+ * This is a modified version of William C. Colley III's A85 cross assembler
+ * in "portable C." Modifications included from Herb Johnson and The Glitch
+ * Works. See README in project root for more information.
+ * 
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of  MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /*
-		      8085 Cross-Assembler in Portable C
-
-		Copyright (c) 1985,1987 William C. Colley, III
-
-Revision History:
-
-Ver	Date		Description
-
-0.0	AUG 1987	Derived from version 3.4 of my portable 6800/6801
-			cross-assembler.  WCC3.
-
-0.1	AUG 1988	Fixed a bug in the command line parser that puts it
-			into a VERY long loop if the user types a command line
-			like "A85 FILE.ASM -L".  WCC3 per Alex Cameron.
-
-
-	DEC 2013	changes by Herb Johnson to compile under lcc-32 for MS-DOS.
-			fixes as late as April 2010. Also see "a18octal.txt" to
-			change listing from hexidecimal values to octal.
-
-	2013  	Fixes for Turbo C HRJ include line[] changed to lline[]
-
-
-
 This module contains the following utility packages:
 
 	1)  symbol table building and searching
@@ -47,7 +37,6 @@ This module contains the following utility packages:
 */
 
 /*  Get global goodies:  */
-
 #include "a85.h"
 #include <string.h> /* HRJ */
 #include <ctype.h>

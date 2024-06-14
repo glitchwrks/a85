@@ -4,7 +4,7 @@ A cross assembler for 8080/8085 processors based on William C. Colley, III's A85
 
 Original work by William C. Colley III and changes by Herb Johnson are licensed under their own terms. See A85.DOC for more information. Glitch Works changes and improvements are licensed under the GNU GPL v3.
 
-Herb Johnson's information on A85 can be found at [http://www.retrotechnology.com/restore/a85.html](http://www.retrotechnology.com/restore/a85.html).
+Herb Johnson's distribution of A85 can be found at [http://www.retrotechnology.com/restore/a85.html](http://www.retrotechnology.com/restore/a85.html).
 
 Unless something is tagged with a release number, consider this work to be ALPHA or EXPERIMENTAL.
 

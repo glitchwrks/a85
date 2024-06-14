@@ -1,51 +1,28 @@
-/*
-	HEADER:		CUG267;
-	TITLE:		8085 Cross-Assembler (Portable);
-	FILENAME:	A85.H;
-	VERSION:	0.1;
-	DATE:		08/27/1988;
+/* A85 Cross Assembler in Portable C
+ *
+ * Copyright (c) 1985,1987 William C. Colley, III
+ * Copyright (c) 2013 Herb Johnson
+ * Copyright (c) 2020 The Glitch Works
+ *
+ * This is a modified version of William C. Colley III's A85 cross assembler
+ * in "portable C." Modifications included from Herb Johnson and The Glitch
+ * Works. See README in project root for more information.
+ * 
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of  MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-	DESCRIPTION:	"This program lets you use your computer to assemble
-			code for the Intel 8080 and 8085 microprocessors.  The
-			program is written in portable C rather than BDS C.
-			All assembler features are supported except
-			relocation, linkage, and macros.";
-
-	KEYWORDS:	Software Development, Assemblers, Cross-Assemblers,
-			Intel, 8080, 8085;
-
-	SYSTEM:		CP/M-80, CP/M-86, HP-UX, MSDOS, PCDOS, QNIX;
-	COMPILERS:	Aztec C86, Aztec CII, CI-C86, Eco-C, Eco-C88, HP-UX,
-			Lattice C, Microsoft C,	QNIX C;
-
-	WARNINGS:	"This program has compiled successfully on 2 UNIX
-			compilers, 5 MSDOS compilers, and 2 CP/M compilers.
-			A port to BDS C would be extremely difficult.  A port
-			to Toolworks C is untried."
-
-	AUTHORS:	William C. Colley III;
-*/
-
-/*
-		  8085 Cross-Assembler in Portable C
-
-		Copyright (c) 1985,1987 William C. Colley, III
-
-Revision History:
-
-Ver	Date		Description
-
-0.0	AUG 1987	Derived from version 3.4 of my portable 6800/6801
-			cross-assembler.  WCC3.
-
-0.1	AUG 1988	Fixed a bug in the command line parser that puts it
-			into a VERY long loop if the user types a command line
-			like "A85 FILE.ASM -L".  WCC3 per Alex Cameron.
-
-       Dec 2013   Turbo C needed a dummy variable in file, to do extern right HRJ
-
-
-This header file contains the global constants and data type definitions for
+/*This header file contains the global constants and data type definitions for
 all modules of the cross-assembler.  This also seems a good place to put the
 compilation and linkage instructions for the animal.  This list currently
 includes the following compilers:
