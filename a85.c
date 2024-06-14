@@ -561,7 +561,7 @@ static void pseudo_op(void)
 			if (++ifsp == IFDEPTH) fatal_error(IFOFLOW);
 
 			suppress(); /* Suppress UNDEFINED LABEL for this lex */
-			lex(); /* Process whatever may be next after the IFDEF */
+			lex(); /* Process whatever may be after the IFDEF */
 
 			if (off) { 
 				/* Handle possibility of nested IFDEFs */
@@ -585,6 +585,36 @@ static void pseudo_op(void)
 			}
 
 			break;
+
+		case IFNDEF:
+			/* Increment the IF stack pointer, check for overflow */
+			if (++ifsp == IFDEPTH) fatal_error(IFOFLOW);
+
+			suppress(); /* Suppress UNDEFINED LABEL for this lex */
+			lex(); /* Process whatever may be after the IFNDEF */
+
+			if (off) { 
+				/* Handle possibility of nested IFNDEFs */
+				listhex = FALSE;
+				ifstack[ifsp] = ASM_NULL; /* Set IF stack value to NULL state */
+			} else {
+				if (token.attr == VAL) {
+					if (find_symbol(token.sval) && !forwd) {
+						address = token.valu; /* Show defined symbol as address */
+						ifstack[ifsp] = ASM_OFF; /* Push assembly state to IF stack */
+						off = TRUE;	/* Switch assembly OFF for this block */
+					} else {
+						address = 0xFFFF; /* Symbol undefined, IFNDEF taken, show it in address */
+						ifstack[ifsp] = ASM_ON; /* Push assembly state to IF stack */
+						off = FALSE; /* Switch assembly ON for this block */
+					}
+				} else {
+					error('V');	/* Not a value we can try to look up */
+				}
+			}
+
+			break;
+
 
 		case INCL:
 			listhex = FALSE;

@@ -102,6 +102,7 @@
              4.4  Pseudo-ops -- END .................................. 10
              4.5  Pseudo-ops -- EQU .................................. 10
              4.6  Pseudo-ops -- IF, ELSE, ENDIF ...................... 10
+             4.6.1 Pseudo-ops -- IFDEF, IFNDEF ....................... 10
              4.7  Pseudo-ops -- INCL ................................. 11
              4.8  Pseudo-ops -- ORG .................................. 12
              4.9  Pseudo-ops -- PAGE ................................. 12
@@ -726,7 +727,43 @@
         IFDEPTH in file A85.H and recompile the assembler.
 
 
-        4.7  Pseudo-ops -- INCL
+        4.6.1 Pseudo-ops -- IFDEF, IFNDEF
+
+             IFDEF and IFNDEF allow conditional assembly based on whether
+        a symbol is defined in the symbol table. Code that is not assembled
+        is passed through to the listing, but otherwise ignored. IFDEF and
+        IFNDEF require one argument that must be a symbol. The symbol's
+        existance, not its value, determines whether the block is assembled.
+        As with IF, the ENDIF pseudo-op marks the end of the conditionally
+        assembled block, and is mandatory. Example:
+
+                       IFNDEF   FOO
+                 FOO   equ      055H
+                       ENDIF
+
+                       IFDEF    FOO
+                       MVI      A, FOO
+                       ENDIF
+
+             ELSE works with IFDEF and IFNDEF in the same manner as IF. No
+        label is allowed before IFDEF and IFNDEF. IF stack depth is consumed
+        by IFDEF and IFNDEF. Example:
+
+                 BAR    equ     0AAH
+
+                        IFDEF   BAR
+                        MVI     A, BAR
+                        ELSE
+                        MVI     A, 0FFH
+                        ENDIF
+
+             IFDEF and IFNDEF will not consider a forward defined symbol since
+        doing so would preclude conditionally defining a symbol in a following
+        ELSE block. Referencing a forward defined symbol will not produce a
+        phasing error.
+
+
+        4.7  Pseudo-ops -- INCL or INCLUDE
 
              The INCL pseudo-op is used to splice the contents of another 
         file into the current file at assembly time.  The name of the 

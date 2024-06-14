@@ -331,6 +331,36 @@ VARIABLE	SET	VARIABLE EQ 0
 		DW	, -1
 		ENDIF
 
+; Test IFDEF behavior
+FOO		equ	0AAH
+		
+		IFDEF	FOO
+BAR:		DB	FOO
+		ELSE
+BAR:		DB	055H
+		ENDIF
+
+		IFDEF	BAZ		;Not defined
+		OUT	00H
+		ELSE
+		OUT	0FFH
+		ENDIF
+
+; Test IFNDEF behavior
+		IFNDEF	BAZ		;Not defined
+		MVI	A, 01H
+		ELSE
+		MVI	A, 80H
+		ENDIF
+
+QUX:		MVI	A, 0FFH
+		
+		IFNDEF	QUX
+QUX:		equ	0044H
+		ELSE
+		LXI	H, QUX
+		ENDIF
+
 		DS	10H
 
 		DB	"EXPLOSION", 0DH, 0AH, 0

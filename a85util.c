@@ -167,6 +167,7 @@ OPCODE *find_code(char *nam)
 	{ NONE + 1,				0x76,	"HLT"	},
 	{ PSEUDO + ISIF,			IF,	"IF"	},
 	{ PSEUDO + ISIF,			IFDEF,	"IFDEF"	},
+	{ PSEUDO + ISIF,			IFNDEF,	"IFNDEF"},
 	{ PORT + 2,				0xdb,	"IN"	},
 	{ PSEUDO,				INCL,	"INCL"	},
 	{ PSEUDO,				INCL,	"INCLUDE"},

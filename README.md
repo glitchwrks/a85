@@ -1,6 +1,6 @@
 # A85 Cross Assembler
 
-A cross assembler for 8080/8085 processors based on William C. Colley, III's A85 from C User's Group disk number 267, with modifications from Herb Johnson and The Glitch Works. 
+A cross assembler for 8080/8085 processors based on William C. Colley, III's A85 from C User's Group disk number 267, with modifications from Herb Johnson and Glitch Works, LLC. 
 
 Original work by William C. Colley III and changes by Herb Johnson are licensed under their own terms. See A85.DOC for more information. Glitch Works changes and improvements are licensed under the GNU GPL v3.
 
@@ -36,6 +36,9 @@ Ver     Date            Description
 
 0.2     FEB 2020        Glitch Works general cleanup, added support for
                         PRINT and INCLUDE.
+
+0.3     JUN 2024        Glitch Works addition of IFDEF, IFNDEF. Light cleanup
+                        and improvement of comments, enum names.
 ```
 
 ### Herb's Notes

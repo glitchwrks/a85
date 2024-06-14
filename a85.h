@@ -316,6 +316,7 @@ instead.								*/
 #define	TITLE	13
 #define	PRINT	14
 #define	IFDEF	15
+#define	IFNDEF	16
 
 /*  Lexical analyzer (A85EVAL.C) token buffer and stream pointer:	*/
 
